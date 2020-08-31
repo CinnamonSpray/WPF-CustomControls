@@ -1,0 +1,27 @@
+﻿<UserControl x:Class="CustomControls.HintTextBox"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="clr-namespace:CustomControls"
+             Name="HintTextBoxControl">
+    
+    <UserControl.Resources>
+        <local:HintTextConditionConverter x:Key="HintTextConditionConverter"/>
+    </UserControl.Resources>
+
+    <Grid>
+        <TextBlock Name="WaterMarkBox" Text="{Binding ElementName=HintTextBoxControl, Path=WaterMarkText}">
+            <TextBlock.Visibility>
+                <MultiBinding Converter="{StaticResource HintTextConditionConverter}">
+                    <Binding ElementName="BaseTextBox" Path="Text.IsEmpty" />
+                    <Binding ElementName="BaseTextBox" Path="IsFocused" />
+                </MultiBinding>
+            </TextBlock.Visibility>
+        </TextBlock>
+        <TextBox Name="BaseTextBox" Background="Transparent"
+                 Text="{Binding ElementName=HintTextBoxControl, Path=BaseText, UpdateSourceTrigger=PropertyChanged}"
+                 InputMethod.IsInputMethodSuspended="{Binding ElementName=HintTextBoxControl, Path=IsNumeric}"
+                 PreviewTextInput="BaseTextBox_PreviewTextInput"
+                 TextChanged="BaseTextBox_TextChanged"/>
+    </Grid>
+
+</UserControl>
